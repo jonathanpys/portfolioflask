@@ -514,7 +514,14 @@
   <nav class="fixed top-0 left-0 right-0 bg-[#0a0e27]/95 backdrop-blur-md z-50 shadow-lg border-b border-purple-500/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
-        <a href="#home" class="text-2xl font-bold gradient-text wiggle">JP<span class="text-purple-400">.</span></a>
+        <a href="#home" class="flex items-center group wiggle">
+          <div
+            class="w-10 h-10 relative rounded-full overflow-hidden border-2 border-transparent group-hover:border-purple-500 transition-all duration-300">
+            <img src="{{ url_for('static', filename='assets/img/IMG_0059.JPG') }}" alt="Logo Jonathan"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-purple-500/10 group-hover:bg-transparent transition-colors"></div>
+          </div>
+        </a>
 
         <div class="hidden md:flex space-x-8 items-center">
           <a href="#home"
@@ -578,14 +585,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center">
         <!-- Animated Avatar -->
-        <div class="mb-8 relative inline-block">
-          <div
-            class="avatar w-32 h-32 mx-auto rounded-full gradient-bg flex items-center justify-center text-white text-5xl font-bold relative pulse">
-            {{ data.name[0] }}
+        <div class="mb-8 relative inline-block text-center w-full reveal reveal-scale">
+          <div class="relative w-32 h-32 mx-auto">
+            <img src="{{ url_for('static', filename='assets/img/IMG_0059.jpg') }}" alt="{{ data.name }}"
+              class="w-full h-full rounded-full object-cover border-[3px] border-purple-500/50 shadow-xl p-1 bg-[#0a0e27]/80 backdrop-blur-sm">
+
             <div
-              class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0a0e27] animate-ping">
+              class="absolute top-1 right-1 w-5 h-5 bg-green-500 rounded-full border-[3px] border-[#0a0e27] animate-ping opacity-75">
             </div>
-            <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0a0e27]"></div>
+            <div class="absolute top-1 right-1 w-5 h-5 bg-green-500 rounded-full border-[3px] border-[#0a0e27]"></div>
           </div>
         </div>
 

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen p-8">
+
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-700 pb-4 gap-4">
+        <h1
+            class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 text-center md:text-left">
+            CMS Dashboard
+        </h1>
+        <div class="flex gap-4 w-full md:w-auto justify-center">
+            <a href="/" target="_blank"
+                class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm flex items-center">
+                <i class="fas fa-eye mr-2"></i> View Site
+            </a>
+            <a href="/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-sm flex items-center">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-purple-400"><i class="fas fa-user-edit"></i> Edit Profile</h2>
+            <form action="/admin/update_profile" method="POST" class="space-y-4">
+                <div>
+                    <label class="text-sm text-gray-400">Job Title</label>
+                    <input type="text" name="title" value="{{ data.title }}"
+                        class="w-full bg-gray-700 p-2 rounded text-white mt-1">
+                </div>
+                <div>
+                    <label class="text-sm text-gray-400">Bio</label>
+                    <textarea name="bio" rows="4"
+                        class="w-full bg-gray-700 p-2 rounded text-white mt-1">{{ data.bio }}</textarea>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <input type="text" name="linkedin" value="{{ data.social.linkedin }}" placeholder="LinkedIn URL"
+                        class="bg-gray-700 p-2 rounded text-xs">
+                    <input type="text" name="github" value="{{ data.social.github }}" placeholder="GitHub URL"
+                        class="bg-gray-700 p-2 rounded text-xs">
+                    <input type="text" name="instagram" value="{{ data.social.instagram }}" placeholder="Instagram URL"
+                        class="bg-gray-700 p-2 rounded text-xs">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded font-bold">Save
+                    Profile</button>
+            </form>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-indigo-400"><i class="fas fa-link"></i> Manage Contact Links</h2>
+
+            <div class="mb-4 h-48 overflow-y-auto space-y-2 pr-2">
+                {% for social in data.social_links %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 {{ social.color }} rounded flex items-center justify-center text-white text-xs">
+                            <i class="{{ social.icon }}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">{{ social.platform }}</p>
+                            <a href="{{ social.url }}" target="_blank"
+                                class="text-xs text-gray-400 truncate w-32 block hover:text-white">{{ social.url }}</a>
+                        </div>
+                    </div>
+                    <form action="/admin/delete_social" method="POST" onsubmit="return confirm('Hapus link ini?');">
+                        <input type="hidden" name="platform" value="{{ social.platform }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Link</h3>
+                <form action="/admin/add_social" method="POST" class="space-y-2">
+                    <input type="text" name="platform" placeholder="Platform Name (e.g. WhatsApp)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+
+                    <input type="text" name="url" placeholder="Link URL (https://...)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="relative group">
+                            <input type="text" name="icon" placeholder="Icon Class (fab fa-whatsapp)" required
+                                class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                            <div
+                                class="absolute bottom-full mb-2 hidden group-hover:block bg-black text-xs p-1 rounded">
+                                Cari di fontawesome.com</div>
+                        </div>
+
+                        <select name="color" class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                            <option value="bg-blue-600">Blue (LinkedIn/FB)</option>
+                            <option value="bg-gray-800">Gray (GitHub/X)</option>
+                            <option value="bg-pink-600">Pink (Instagram)</option>
+                            <option value="bg-green-500">Green (WhatsApp)</option>
+                            <option value="bg-red-600">Red (YouTube/Mail)</option>
+                            <option value="bg-indigo-600">Indigo (Discord)</option>
+                            <option value="bg-black">Black (TikTok)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 p-2 rounded font-bold text-sm text-white">Add
+                        Link</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-green-400"><i class="fas fa-code"></i> Manage Projects</h2>
+
+            <div class="mb-4 h-64 overflow-y-auto space-y-2 pr-2">
+                {% for project in data.projects %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div>
+                        <p class="font-bold text-sm">{{ project.title }}</p>
+                        <p class="text-xs text-gray-400 truncate w-48">{{ project.description }}</p>
+                    </div>
+                    <form action="/admin/delete_project" method="POST" onsubmit="return confirm('Hapus project ini?');">
+                        <input type="hidden" name="title" value="{{ project.title }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Project</h3>
+
+                <form action="/admin/add_project" method="POST" enctype="multipart/form-data" class="space-y-2">
+                    <input type="text" name="title" placeholder="Project Title" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+
+                    <div class="bg-gray-700 p-2 rounded text-sm">
+                        <label class="block text-gray-400 text-xs mb-1">Project Image (Thumbnail)</label>
+                        <input type="file" name="image" accept="image/*" class="w-full text-gray-300">
+                    </div>
+
+                    <div class="bg-gray-700 p-2 rounded text-sm">
+                        <label class="block text-gray-400 text-xs mb-1">Video URL (YouTube Embed)</label>
+                        <input type="text" name="video" placeholder="https://www.youtube.com/embed/KODE_VIDEO"
+                            class="w-full bg-gray-600 p-2 rounded text-sm text-white placeholder-gray-400">
+                        <p class="text-[10px] text-gray-400 mt-1">Gunakan link embed, bukan link watch.</p>
+                    </div>
+
+                    <textarea name="description" placeholder="Description" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white"></textarea>
+
+                    <input type="text" name="technologies"
+                        placeholder="Tech Stack (comma separated: PHP, Laravel, MySQL)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+
+                    <button type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 p-2 rounded font-bold text-sm">Add
+                        Project</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-yellow-400"><i class="fas fa-certificate"></i> Manage Certificates
+            </h2>
+
+            <div class="mb-4 h-48 overflow-y-auto space-y-2 pr-2">
+                {% for cert in data.certificates %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div>
+                        <p class="font-bold text-sm">{{ cert.title }}</p>
+                        <p class="text-xs text-gray-400">{{ cert.issuer }}</p>
+                    </div>
+                    <form action="/admin/delete_certificate" method="POST"
+                        onsubmit="return confirm('Hapus sertifikat ini?');">
+                        <input type="hidden" name="title" value="{{ cert.title }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Certificate</h3>
+                <form action="/admin/add_certificate" method="POST" enctype="multipart/form-data" class="space-y-2">
+                    <input type="text" name="title" placeholder="Certificate Title" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm">
+                    <input type="text" name="issuer" placeholder="Issuer (e.g. Oracle)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm">
+                    <input type="text" name="date" placeholder="Date (e.g. July 2025)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm">
+
+                    <div class="bg-gray-700 p-2 rounded text-sm">
+                        <label class="block text-gray-400 text-xs mb-1">Certificate Image</label>
+                        <input type="file" name="image" required accept="image/*" class="w-full text-gray-300">
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-yellow-600 hover:bg-yellow-700 p-2 rounded font-bold text-sm">Add
+                        Certificate</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-orange-400"><i class="fas fa-trophy"></i> Manage Achievements</h2>
+
+            <div class="mb-4 h-48 overflow-y-auto space-y-2 pr-2">
+                {% for ach in data.achievements %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div>
+                        <p class="font-bold text-sm">{{ ach.title }}</p>
+                        <p class="text-xs text-gray-400">{{ ach.event }}</p>
+                    </div>
+                    <form action="/admin/delete_achievement" method="POST"
+                        onsubmit="return confirm('Hapus achievement ini?');">
+                        <input type="hidden" name="title" value="{{ ach.title }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Achievement</h3>
+                <form action="/admin/add_achievement" method="POST" class="space-y-2">
+                    <input type="text" name="title" placeholder="Achievement Title (e.g. 1st Winner)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <input type="text" name="event" placeholder="Event Name" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" name="location" placeholder="Location" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                        <input type="text" name="date" placeholder="Date (e.g. Sept 2024)" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    </div>
+                    <textarea name="description" placeholder="Description" rows="2" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white"></textarea>
+
+                    <button type="submit"
+                        class="w-full bg-orange-600 hover:bg-orange-700 p-2 rounded font-bold text-sm text-white">Add
+                        Achievement</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-cyan-400"><i class="fas fa-briefcase"></i> Manage Experience</h2>
+
+            <div class="mb-4 h-64 overflow-y-auto space-y-2 pr-2">
+                {% for exp in data.experience %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div>
+                        <p class="font-bold text-sm">{{ exp.title }}</p>
+                        <p class="text-xs text-gray-400">{{ exp.company }}</p>
+                    </div>
+                    <form action="/admin/delete_experience" method="POST"
+                        onsubmit="return confirm('Hapus pengalaman kerja ini?');">
+                        <input type="hidden" name="title" value="{{ exp.title }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Experience</h3>
+                <form action="/admin/add_experience" method="POST" class="space-y-2">
+                    <input type="text" name="title" placeholder="Job Title (e.g. Web Intern)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <input type="text" name="company" placeholder="Company Name" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" name="location" placeholder="Location" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                        <input type="text" name="period" placeholder="Period (e.g. Jan - Mar 2024)" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-400">Responsibilities (Tekan ENTER untuk poin baru)</label>
+                        <textarea name="responsibilities"
+                            placeholder="- Membuat website&#10;- Design UI/UX&#10;- Meeting klien" rows="4" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-cyan-600 hover:bg-cyan-700 p-2 rounded font-bold text-sm text-white">Add
+                        Experience</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-pink-400"><i class="fas fa-users"></i> Manage Organization</h2>
+
+            <div class="mb-4 h-64 overflow-y-auto space-y-2 pr-2">
+                {% for org in data.organizational %}
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded">
+                    <div>
+                        <p class="font-bold text-sm">{{ org.title }}</p>
+                        <p class="text-xs text-gray-400">{{ org.organization }}</p>
+                    </div>
+                    <form action="/admin/delete_organization" method="POST"
+                        onsubmit="return confirm('Hapus pengalaman organisasi ini?');">
+                        <input type="hidden" name="title" value="{{ org.title }}">
+                        <button type="submit" class="text-red-400 hover:text-red-300"><i
+                                class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-gray-600 pt-4">
+                <h3 class="text-sm font-bold mb-2">Add New Organization</h3>
+                <form action="/admin/add_organization" method="POST" class="space-y-2">
+                    <input type="text" name="title" placeholder="Role Title (e.g. Staff of PIXEL)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <input type="text" name="organization" placeholder="Organization Name (e.g. HMPSI)" required
+                        class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" name="location" placeholder="Location" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                        <input type="text" name="period" placeholder="Period (e.g. Jan - Dec 2025)" required
+                            class="w-full bg-gray-700 p-2 rounded text-sm text-white">
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-400">Responsibilities (Tekan ENTER untuk poin baru)</label>
+                        <textarea name="responsibilities"
+                            placeholder="- Mengedit video&#10;- Membuat poster&#10;- Menjadi videographer" rows="4"
+                            required class="w-full bg-gray-700 p-2 rounded text-sm text-white"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-pink-600 hover:bg-pink-700 p-2 rounded font-bold text-sm text-white">Add
+                        Organization</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

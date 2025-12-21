@@ -1,0 +1,7 @@
+venv/
+.env
+__pycache__/
+*.pyc
+*.mp4
+*.mov
+static/assets/vid/

@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ data.name }} - Full Stack Developer & UI/UX Designer</title>
+    <meta name="title" content="{{ data.name }} - Portfolio">
+    <meta name="description" content="{{ data.bio }}">
+    <meta name="keywords"
+      content="Portfolio, {{ data.name }}, Full Stack Developer, Python, Flask, Web Developer, UI/UX Designer, Laravel, Indonesia">
+    <meta name="author" content="{{ data.name }}">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ data.social.portfolio }}">
+    <meta property="og:title" content="{{ data.name }} - Full Stack Developer">
+    <meta property="og:description" content="{{ data.bio }}">
+
+    <meta property="og:image"
+      content="{{ url_for('static', filename='assets/img/preview-portfolio.png', _external=True) }}">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ data.social.portfolio }}">
+    <meta property="twitter:title" content="{{ data.name }} - Full Stack Developer">
+    <meta property="twitter:description" content="{{ data.bio }}">
+    <meta property="twitter:image"
+      content="{{ url_for('static', filename='assets/img/preview-portfolio.jpg', _external=True) }}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/img/portfolio.png') }}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gradient-bg {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+    }
+
+    .gradient-text {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    }
+
+    /* Floating Animations */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+
+    @keyframes floatReverse {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(20px) rotate(-5deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(5deg);
+      }
+
+      75% {
+        transform: rotate(-5deg);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+
+      70% {
+        transform: scale(0.9);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes blob {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -50px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+    }
+
+    @keyframes rainbow {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .float-reverse {
+      animation: floatReverse 4s ease-in-out infinite;
+    }
+
+    .pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .wiggle:hover {
+      animation: wiggle 0.5s ease-in-out;
+    }
+
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: blob 7s infinite;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: scale(1.05) rotate(-2deg);
+      border-color: rgba(102, 126, 234, 0.6);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .tool-badge {
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      cursor: pointer;
+    }
+
+    .tool-badge:hover {
+      transform: translateY(-5px) scale(1.1) rotate(3deg);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+    }
+
+    .reveal-left {
+      transform: translateX(-50px);
+    }
+
+    .reveal-left.active {
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      transform: translateX(50px);
+    }
+
+    .reveal-right.active {
+      transform: translateX(0);
+    }
+
+    .reveal-up {
+      transform: translateY(50px);
+    }
+
+    .reveal-up.active {
+      transform: translateY(0);
+    }
+
+    /* Animated Background */
+    .animated-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #667eea);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Floating Shapes */
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+    }
+
+    .shape-1 {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      animation: floatReverse 8s ease-in-out infinite;
+    }
+
+    .shape-3 {
+      animation: float 7s ease-in-out infinite;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      z-index: 999;
+      transition: width 0.3s ease;
+    }
+
+    /* Button Ripple Effect */
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .ripple:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Nav Animation */
+    nav {
+      animation: slideInUp 0.5s ease;
+    }
+
+    /* Avatar Animation */
+    .avatar {
+      animation: bounceIn 1s ease;
+    }
+
+    .avatar::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+      background-size: 400% 400%;
+      animation: gradient 3s ease infinite;
+      z-index: -1;
+    }
+
+    /* Social Icon Hover - Versi Simpel */
+    .social-icon {
+    transition: all 0.3s ease; /* Transisi standar yang halus */
+    }
+
+    .social-icon:hover {
+    transform: translateY(-5px); /* Hanya naik sedikit (5px) ke atas */
+    background-color: rgba(255, 255, 255, 0.1); /* Efek highlight warna sedikit */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Menambah bayangan halus */
+    }
+
+    /* Sparkle Effect */
+    @keyframes sparkle {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 1.5s ease-in-out infinite;
+    }
+
+    /* Tab Styles */
+    .tab-btn {
+      color: #9ca3af;
+      background: transparent;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: rgba(102, 126, 234, 0.1);
+      color: #a5b4fc;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Project and Certificate Cards */
+    .project-card,
+    .cert-card,
+    .tech-card {
+      cursor: pointer;
+    }
+
+    .project-card:hover,
+    .cert-card:hover {
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+    }
+
+    .tech-card:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    }
+
+    .see-more-btn:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#0a0e27] smooth-scroll">
+  <!-- Progress Bar -->
+  <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+
+  <!-- Floating Shapes -->
+  <div class="shape shape-1"
+    style="top: 10%; left: 10%; width: 100px; height: 100px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3)); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;">
+  </div>
+  <div class="shape shape-2"
+    style="top: 60%; right: 10%; width: 80px; height: 80px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.3), rgba(102, 126, 234, 0.3)); border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;">
+  </div>
+  <div class="shape shape-3"
+    style="bottom: 20%; left: 15%; width: 120px; height: 120px; background: linear-gradient(135deg, rgba(118, 75, 162, 0.3), rgba(240, 147, 251, 0.3)); border-radius: 41% 59% 48% 52% / 63% 43% 57% 37%;">
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 bg-[#0a0e27]/95 backdrop-blur-md z-50 shadow-lg border-b border-purple-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="#home" class="text-2xl font-bold gradient-text wiggle">JP<span class="text-purple-400">.</span></a>
+
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="#home"
+            class="text-gray-300 hover:text-purple-400 transition transform hover:scale-110 font-medium">Home</a>
+          <a href="#portfolio"
+            class="text-gray-300 hover:text-purple-400 transition transform hover:scale-110 font-medium">Portfolio</a>
+          <a href="#achievements"
+            class="text-gray-300 hover:text-purple-400 transition transform hover:scale-110 font-medium">Achievements</a>
+          <a href="#experience"
+            class="text-gray-300 hover:text-purple-400 transition transform hover:scale-110 font-medium">Experience</a>
+          <a href="#contact"
+            class="text-gray-300 hover:text-purple-400 transition transform hover:scale-110 font-medium">Contact</a>
+          <a href="https://drive.google.com/file/d/1qULSUprXSVV-Hq5Zs-f4GIE4__BibFAU/view?usp=sharing" target="_blank"
+            class="gradient-bg text-white px-6 py-2 rounded-full hover:opacity-90 transition transform hover:scale-105 ripple shadow-lg text-sm">
+            <i class="fas fa-download mr-2"></i>Download CV
+          </a>
+        </div>
+
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0a0e27] border-b border-purple-500/20 absolute w-full">
+      <div class="px-4 pt-2 pb-6 space-y-2 shadow-xl">
+        <a href="#home" onclick="toggleMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-md">Home</a>
+        <a href="#portfolio" onclick="toggleMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-md">Portfolio</a>
+        <a href="#achievements" onclick="toggleMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-md">Achievements</a>
+        <a href="#experience" onclick="toggleMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-md">Experience</a>
+        <a href="#contact" onclick="toggleMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-md">Contact</a>
+        <a href="https://drive.google.com/file/d/1qULSUprXSVV-Hq5Zs-f4GIE4__BibFAU/view?usp=sharing" target="_blank"
+          class="block w-full text-center mt-4 gradient-bg text-white px-6 py-3 rounded-xl font-bold">
+          <i class="fas fa-download mr-2"></i>Download CV
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home"
+    class="min-h-screen flex items-center justify-center relative overflow-hidden pt-16 bg-gradient-to-br from-[#0a0e27] via-[#0f1335] to-[#1a1f3a]">
+    <!-- Animated Background Blobs -->
+    <div class="blob gradient-bg w-96 h-96 top-20 left-20"></div>
+    <div class="blob gradient-bg w-80 h-80 bottom-20 right-20" style="animation-delay: 2s;"></div>
+    <div class="blob gradient-bg w-64 h-64 top-1/2 right-1/4" style="animation-delay: 4s;"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkle" style="top: 20%; left: 30%; animation-delay: 0s;"></div>
+    <div class="sparkle" style="top: 40%; right: 25%; animation-delay: 0.5s;"></div>
+    <div class="sparkle" style="bottom: 30%; left: 20%; animation-delay: 1s;"></div>
+    <div class="sparkle" style="top: 60%; right: 40%; animation-delay: 1.5s;"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <!-- Animated Avatar -->
+        <div class="mb-8 relative inline-block">
+          <div
+            class="avatar w-32 h-32 mx-auto rounded-full gradient-bg flex items-center justify-center text-white text-5xl font-bold relative pulse">
+            {{ data.name[0] }}
+            <div
+              class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0a0e27] animate-ping">
+            </div>
+            <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0a0e27]"></div>
+          </div>
+        </div>
+
+        <!-- Animated Text -->
+        <h1 class="text-5xl md:text-7xl font-bold mb-4 reveal reveal-up active">
+          <span class="inline-block float">👋</span> <span class="text-white">Hi, I'm</span> <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">{{ data.name.split()[0] }}</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 mb-6 reveal reveal-up active" style="animation-delay: 0.2s;">
+          <span class="inline-block float-reverse">✨</span> {{ data.title }} <span class="inline-block float">🚀</span>
+        </p>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8 reveal reveal-up active" style="animation-delay: 0.4s;">
+          {{ data.bio }}</p>
+
+        <!-- Animated Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-12">
+
+          <div class="stat-card p-6 rounded-2xl reveal reveal-up active" style="animation-delay: 0.6s;">
+            <div class="text-4xl mb-2">🎯</div>
+            <div class="text-4xl font-bold gradient-text">{{ data.projects|length }}</div>
+            <div class="text-gray-400 mt-2">Projects Completed</div>
+          </div>
+
+          <div class="stat-card p-6 rounded-2xl reveal reveal-up active" style="animation-delay: 0.8s;">
+            <div class="text-4xl mb-2">🏆</div>
+            <div class="text-4xl font-bold gradient-text">{{ data.certificates|length }}</div>
+            <div class="text-gray-400 mt-2">Certifications</div>
+          </div>
+
+          <div class="stat-card p-6 rounded-2xl reveal reveal-up active" style="animation-delay: 1s;">
+            <div class="text-4xl mb-2">⚡</div>
+            <div class="text-4xl font-bold gradient-text">{{ data.stats.experience }}</div>
+            <div class="text-gray-400 mt-2">Years Experience</div>
+          </div>
+
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="mt-16 animate-bounce">
+          <a href="#portfolio" class="inline-block">
+            <i class="fas fa-chevron-down text-3xl text-purple-400"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio"
+    class="py-20 bg-gradient-to-b from-[#0a0e27] via-[#0f1335] to-[#0a0e27] relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-center mb-4 reveal reveal-up text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+        Portfolio Showcase
+      </h2>
+      <p class="text-center text-gray-300 mb-16 reveal reveal-up max-w-4xl mx-auto">
+        Explore my journey through projects, certifications, and technical expertise. Each section represents a
+        milestone in my continuous learning path.
+      </p>
+
+      <!-- Tab Navigation -->
+      <div class="flex justify-center mb-12 reveal reveal-up">
+        <div
+          class="inline-flex bg-[#1a1f3a]/50 backdrop-blur-sm p-2 rounded-2xl border border-purple-500/20 overflow-x-auto max-w-full">
+          <button onclick="switchTab('projects')" id="tab-projects"
+            class="tab-btn active flex items-center px-4 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 whitespace-nowrap text-sm md:text-base">
+            <i class="fas fa-code mr-2 md:mr-3"></i>
+            <span class="font-semibold">Projects</span>
+          </button>
+          <button onclick="switchTab('certificates')" id="tab-certificates"
+            class="tab-btn flex items-center px-4 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 whitespace-nowrap text-sm md:text-base">
+            <i class="fas fa-certificate mr-2 md:mr-3"></i>
+            <span class="font-semibold">Certificates</span>
+          </button>
+          <button onclick="switchTab('techstack')" id="tab-techstack"
+            class="tab-btn flex items-center px-4 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 whitespace-nowrap text-sm md:text-base">
+            <i class="fas fa-layer-group mr-2 md:mr-3"></i>
+            <span class="font-semibold">Tech Stack</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Projects Tab Content -->
+      <div id="content-projects" class="tab-content active">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for project in data.projects %}
+          <div
+            class="project-card group bg-[#1a1f3a]/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 hover:transform hover:scale-105 {% if loop.index > 6 %}hidden extra-project{% endif %}">
+            <div class="relative overflow-hidden bg-gray-800 h-52">
+
+              {% if project.video %}
+              <iframe src="{{ project.video }}" title="{{ project.title }}" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen class="w-full h-full object-cover">
+              </iframe>
+              {% else %}
+              <img src="{{ project.image }}" alt="{{ project.title }}" loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 bg-gray-800">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e27] via-transparent opacity-60"></div>
+              {% endif %}
+
+            </div>
+            <div class="p-6">
+              <h4 class="text-xl font-bold mb-3 text-white group-hover:text-purple-400 transition">{{ project.title }}
+              </h4>
+              <p class="text-gray-400 mb-4 text-sm line-clamp-2">{{ project.description }}</p>
+              <div class="flex items-center justify-between">
+                <a href="#"
+                  class="text-blue-400 hover:text-blue-300 transition flex items-center text-sm font-semibold">
+                  <span>Live Demo</span>
+                  <i class="fas fa-external-link-alt ml-2"></i>
+                </a>
+                <a href="#" class="text-gray-300 hover:text-white transition flex items-center text-sm font-semibold">
+                  <span>Details</span>
+                  <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if data.projects|length > 6 %}
+        <div class="text-center mt-12">
+          <button onclick="toggleProjects()" id="projectBtn"
+            class="see-more-btn bg-[#1a1f3a]/60 backdrop-blur-sm text-white px-6 py-3 rounded-xl border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 flex items-center mx-auto group">
+            <span id="projectBtnText" class="font-semibold">Show More</span>
+            <i id="projectBtnIcon" class="fas fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+          </button>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Certificates Tab Content -->
+      <div id="content-certificates" class="tab-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for cert in data.certificates %}
+          <div
+            class="cert-card group bg-[#1a1f3a]/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 hover:transform hover:scale-105 {% if loop.index > 6 %}hidden extra-cert{% endif %}">
+
+            <div class="relative overflow-hidden p-4 bg-white/5">
+              <img src="{{ cert.image }}" alt="{{ cert.title }}" loading="lazy"
+                class="w-full h-48 object-contain transition-transform duration-500 group-hover:scale-110">
+            </div>
+
+            <div class="p-6 border-t border-white/5">
+              <h4 class="text-lg font-bold mb-3 text-white group-hover:text-yellow-400 transition leading-tight">
+                {{ cert.title }}
+              </h4>
+
+              <div class="space-y-2 text-sm text-gray-400">
+                <p class="flex items-center">
+                  <i class="fas fa-building w-5 text-purple-400"></i>
+                  <span>{{ cert.issuer }}</span>
+                </p>
+                <p class="flex items-center">
+                  <i class="far fa-calendar-alt w-5 text-purple-400"></i>
+                  <span>{{ cert.date }}</span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if data.certificates|length > 6 %}
+        <div class="text-center mt-12">
+          <button onclick="toggleCertificates()" id="certBtn"
+            class="see-more-btn bg-[#1a1f3a]/60 backdrop-blur-sm text-white px-6 py-3 rounded-xl border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 flex items-center mx-auto group">
+            <span id="certBtnText" class="font-semibold">Show More</span>
+            <i id="certBtnIcon" class="fas fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+          </button>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Tech Stack Tab Content -->
+      <div id="content-techstack" class="tab-content">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {% for tool in data.tools %}
+          {% set icon_class = 'fas fa-code' %}
+          {% set icon_color = 'text-gray-400' %}
+          {% set custom_img = '' %}
+
+          {% if tool.name == 'Python' %}
+          {% set icon_class = 'fab fa-python' %}
+          {% set icon_color = 'text-blue-500' %}
+          {% elif tool.name == 'PHP' %}
+          {% set icon_class = 'fab fa-php' %}
+          {% set icon_color = 'text-purple-500' %}
+          {% elif tool.name == 'Laravel' %}
+          {% set icon_class = 'fab fa-laravel' %}
+          {% set icon_color = 'text-red-600' %}
+          {% elif tool.name == 'CodeIgniter' %}
+          {% set custom_img = 'assets/img/codeigniter-icon.svg' %}
+          {% elif tool.name == 'Flask' %}
+          {% set custom_img = 'assets/img/flask-svgrepo-com.svg' %}
+          {% elif tool.name == 'HTML/CSS' %}
+          {% set icon_class = 'fab fa-html5' %}
+          {% set icon_color = 'text-orange-600' %}
+          {% elif tool.name == 'JavaScript' %}
+          {% set icon_class = 'fab fa-js' %}
+          {% set icon_color = 'text-yellow-400' %}
+          {% elif tool.name == 'MySQL' %}
+          {% set custom_img = 'assets/img/mysql-svgrepo-com.svg' %}
+          {% elif tool.name == 'MongoDB' %}
+          {% set custom_img = 'assets/img/mongodb-icon.svg' %}
+          {% elif tool.name == 'Oracle Database' %}
+          {% set custom_img = 'assets/img/oracle-svgrepo-com.svg' %}
+          {% elif tool.name == 'Figma' %}
+          {% set icon_class = 'fab fa-figma' %}
+          {% set icon_color = 'text-purple-400' %}
+          {% elif tool.name == 'Git' %}
+          {% set icon_class = 'fab fa-git-alt' %}
+          {% set icon_color = 'text-red-500' %}
+          {% elif tool.name == 'Excel' %}
+          {% set custom_img = 'assets/img/microsoft-excel-icon.svg' %}
+          {% elif tool.name == 'Power BI' %}
+          {% set custom_img = 'assets/img/power-bi-icon.svg' %}
+          {% elif tool.name == 'Adobe Photoshop' %}
+          {% set custom_img = 'assets/img/adobe-photoshop-svgrepo-com.svg' %}
+          {% elif tool.name == 'Adobe Premiere Pro' %}
+          {% set custom_img = 'assets/img/adobe-premiere-svgrepo-com.svg' %}
+          {% elif tool.name == 'Adobe After Effects' %}
+          {% set custom_img = 'assets/img/adobe-after-effects-svgrepo-com.svg' %}
+          {% elif tool.name == 'CorelDRAW' %}
+          {% set custom_img = 'assets/img/corel-draw-svgrepo-com.svg' %}
+          {% elif tool.name == 'Canva' %}
+          {% set custom_img = 'assets/img/canva-icon.svg' %}
+          {% endif %}
+
+          <div
+            class="tech-card group bg-[#1a1f3a]/40 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 hover:transform hover:scale-110 flex flex-col items-center {% if loop.index > 12 %}hidden extra-tech{% endif %}">
+            <div class="w-20 h-20 mb-4 flex items-center justify-center">
+              {% if custom_img %}
+              <img src="{{ url_for('static', filename=custom_img) }}" alt="{{ tool.name }}" loading="lazy"
+                class="w-14 h-14 object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+              {% else %}
+              <i class="{{ icon_class }} text-6xl {{ icon_color }} group-hover:text-white transition-colors"></i>
+              {% endif %}
+            </div>
+            <span class="text-white font-semibold text-center">{{ tool.name }}</span>
+            <span class="text-xs text-gray-400 mt-1">{{ tool.category }}</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if data.tools|length > 12 %}
+        <div class="text-center mt-8">
+          <button onclick="toggleTechStack()" id="techStackBtn"
+            class="bg-[#1a1f3a]/60 backdrop-blur-sm text-white px-6 py-3 rounded-xl border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 flex items-center mx-auto group">
+            <span id="techStackText" class="font-semibold">Show More</span>
+            <i id="techStackIcon" class="fas fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+          </button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Section -->
+  <section id="achievements"
+    class="py-20 bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27] relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 reveal reveal-up">
+        <span class="inline-block float">🏆</span> <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400">My
+          Achievements</span>
+      </h2>
+      <p class="text-center text-gray-300 mb-16 reveal reveal-up">Recognitions and awards</p>
+
+      <div class="max-w-3xl mx-auto">
+        {% for achievement in data.achievements %}
+        <div
+          class="card-hover bg-[#1a1f3a]/60 backdrop-blur-sm rounded-3xl p-8 shadow-2xl mb-6 reveal reveal-up border border-yellow-500/20 hover:border-yellow-500/50">
+          <div class="flex items-start">
+            <div class="gradient-bg text-white rounded-full p-6 mr-6 flex-shrink-0 wiggle">
+              <i class="fas fa-trophy text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <div
+                class="inline-block bg-yellow-500/20 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-3 border border-yellow-500/30">
+                🥉 3rd Place Winner
+              </div>
+              <h3 class="text-2xl font-bold mb-2 text-white">{{ achievement.title }}</h3>
+              <p class="text-lg text-purple-400 mb-2 font-semibold">{{ achievement.event }}</p>
+              <p class="text-gray-400 mb-3 flex items-center">
+                <i class="fas fa-map-marker-alt mr-2"></i>{{ achievement.location }}
+                <span class="mx-2">•</span>
+                <i class="far fa-calendar mr-2"></i>{{ achievement.date }}
+              </p>
+              <p class="text-gray-300">{{ achievement.description }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="py-20 bg-gradient-to-b from-[#0a0e27] to-[#0f1335]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 reveal reveal-up">
+        <span class="inline-block float">💼</span> <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Experience</span>
+      </h2>
+      <p class="text-center text-gray-300 mb-16 reveal reveal-up">My professional journey</p>
+
+      <!-- Working Experience -->
+      <div class="mb-16">
+        <h3 class="text-3xl font-bold mb-8 flex items-center reveal reveal-left text-white">
+          <i class="fas fa-briefcase mr-3 text-purple-400 wiggle"></i> Working Experience
+        </h3>
+        <div class="space-y-6">
+          {% for exp in data.experience %}
+          <div
+            class="card-hover bg-gradient-to-r from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-2xl p-8 border-l-4 border-purple-500 reveal reveal-right"
+            style="animation-delay: {{ loop.index0 * 0.2 }}s;">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+              <div>
+                <h4 class="text-2xl font-bold flex items-center text-white">
+                  <span class="inline-block float-reverse mr-2">🚀</span>
+                  {{ exp.title }}
+                </h4>
+                <p class="text-lg text-purple-400 font-semibold">{{ exp.company }}</p>
+              </div>
+              <div class="text-gray-400 mt-2 md:mt-0">
+                <p class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>{{ exp.location }}</p>
+                <p class="flex items-center"><i class="far fa-calendar mr-2"></i>{{ exp.period }}</p>
+              </div>
+            </div>
+            <ul class="space-y-2">
+              {% for resp in exp.responsibilities %}
+              <li class="flex items-start hover:translate-x-2 transition-transform">
+                <i class="fas fa-check-circle text-purple-400 mt-1 mr-3"></i>
+                <span class="text-gray-300">{{ resp }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Organizational Experience -->
+      <div>
+        <h3 class="text-3xl font-bold mb-8 flex items-center reveal reveal-right text-white">
+          <i class="fas fa-users mr-3 text-purple-400 wiggle"></i> Organizational Experience
+        </h3>
+        <div class="space-y-6">
+          {% for org in data.organizational %}
+          <div
+            class="card-hover bg-gradient-to-r from-blue-900/30 to-purple-900/30 backdrop-blur-sm rounded-2xl p-8 border-l-4 border-blue-500 reveal reveal-left"
+            style="animation-delay: {{ loop.index0 * 0.2 }}s;">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+              <div>
+                <h4 class="text-2xl font-bold flex items-center text-white">
+                  <span class="inline-block float mr-2">🎨</span>
+                  {{ org.title }}
+                </h4>
+                <p class="text-lg text-blue-400 font-semibold">{{ org.organization }}</p>
+              </div>
+              <div class="text-gray-400 mt-2 md:mt-0">
+                <p class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>{{ org.location }}</p>
+                <p class="flex items-center"><i class="far fa-calendar mr-2"></i>{{ org.period }}</p>
+              </div>
+            </div>
+            <ul class="space-y-2">
+              {% for resp in org.responsibilities %}
+              <li class="flex items-start hover:translate-x-2 transition-transform">
+                <i class="fas fa-check-circle text-blue-400 mt-1 mr-3"></i>
+                <span class="text-gray-300">{{ resp }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact"
+    class="py-20 bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0f1335] relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 reveal reveal-up">
+        <span class="inline-block float">📬</span> <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Get In
+          Touch</span>
+      </h2>
+      <p class="text-center text-gray-300 mb-16 reveal reveal-up">Let's connect and collaborate!</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Social Links -->
+        <div class="reveal reveal-left">
+          <h3 class="text-2xl font-bold mb-6 flex items-center text-white">
+            <span class="inline-block float-reverse mr-2">🌟</span>
+            Connect With Me
+          </h3>
+          <div class="space-y-4">
+
+            {% for social in data.social_links %}
+            <a href="{{ social.url }}" target="_blank"
+              class="social-icon flex items-center p-4 bg-[#1a1f3a]/60 backdrop-blur-sm rounded-xl hover:shadow-2xl transition group border border-gray-500/20 hover:border-white/30">
+
+              <div
+                class="w-12 h-12 {{ social.color }} rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition shadow-lg">
+                <i class="{{ social.icon }} text-2xl text-white"></i>
+              </div>
+
+              <span class="text-gray-300 font-semibold group-hover:text-white">{{ social.platform }}</span>
+              <i class="fas fa-external-link-alt ml-auto text-gray-500 group-hover:text-white text-sm"></i>
+            </a>
+            {% else %}
+            <p class="text-gray-400 italic">No contact links added yet via Admin Dashboard.</p>
+            {% endfor %}
+
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="reveal reveal-right">
+          <h3 class="text-2xl font-bold mb-6 flex items-center text-white">
+            <span class="inline-block float mr-2">✉️</span>
+            Send Me a Message
+          </h3>
+          <form id="contactForm" class="space-y-4">
+            <div class="transform transition hover:scale-105">
+              <input type="text" id="name" placeholder="Your Name" required
+                class="w-full px-4 py-3 rounded-xl bg-[#1a1f3a]/60 backdrop-blur-sm border-2 border-purple-500/30 focus:border-purple-500 focus:outline-none transition text-white placeholder-gray-400">
+            </div>
+            <div class="transform transition hover:scale-105">
+              <input type="email" id="email" placeholder="Your Email" required
+                class="w-full px-4 py-3 rounded-xl bg-[#1a1f3a]/60 backdrop-blur-sm border-2 border-purple-500/30 focus:border-purple-500 focus:outline-none transition text-white placeholder-gray-400">
+            </div>
+            <div class="transform transition hover:scale-105">
+              <textarea id="message" rows="4" placeholder="Your Message" required
+                class="w-full px-4 py-3 rounded-xl bg-[#1a1f3a]/60 backdrop-blur-sm border-2 border-purple-500/30 focus:border-purple-500 focus:outline-none transition text-white placeholder-gray-400"></textarea>
+            </div>
+            <button type="submit"
+              class="w-full gradient-bg text-white py-3 rounded-xl hover:opacity-90 transition font-semibold transform hover:scale-105 ripple flex items-center justify-center">
+              <i class="fas fa-paper-plane mr-2"></i>
+              Send Message
+            </button>
+          </form>
+          <div id="formMessage" class="mt-4 hidden"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#0a0e27] text-white py-8 border-t border-purple-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="mb-2 text-lg">© 2025 {{ data.name }}. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop"
+    class="fixed bottom-8 right-8 bg-purple-600 text-white w-14 h-14 rounded-full shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 z-50 flex items-center justify-center">
+    <i class="fas fa-arrow-up text-xl"></i>
+  </button>
+
+  <script>
+    // Tab Switching Functionality
+    function switchTab(tabName) {
+      // Remove active class from all tabs and contents
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      // Add active class to selected tab and content
+      document.getElementById('tab-' + tabName).classList.add('active');
+      document.getElementById('content-' + tabName).classList.add('active');
+    }
+
+    // Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    // Scroll Reveal Animation
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+
+      reveals.forEach(element => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', reveal);
+    reveal(); // Initial check
+
+    // Contact Form Handler
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formMessage = document.getElementById('formMessage');
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message
+          })
+        });
+
+        const data = await response.json();
+
+        formMessage.classList.remove('hidden');
+        if (data.success) {
+          formMessage.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-xl animate-bounce';
+          formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + data.message;
+          document.getElementById('contactForm').reset();
+        } else {
+          formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-xl';
+          formMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>' + data.message;
+        }
+      } catch (error) {
+        formMessage.classList.remove('hidden');
+        formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-xl';
+        formMessage.innerHTML =
+          '<i class="fas fa-exclamation-circle mr-2"></i>An error occurred. Please try again.';
+      } finally {
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send Message';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Back to Top Button
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTop.style.opacity = '1';
+        backToTop.style.transform = 'scale(1)';
+      } else {
+        backToTop.style.opacity = '0';
+        backToTop.style.transform = 'scale(0)';
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Add random sparkles
+    function createSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.animationDelay = Math.random() * 2 + 's';
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => sparkle.remove(), 2000);
+    }
+
+    setInterval(createSparkle, 500);
+
+    // FUNGSI TOGGLE TECH STACK
+    function toggleTechStack() {
+    const hiddenItems = document.querySelectorAll('.extra-tech');
+    const btnText = document.getElementById('techStackText');
+    const btnIcon = document.getElementById('techStackIcon');
+
+    // Cek apakah statusnya sedang "Show Less" (artinya sedang terbuka semua)
+    const isExpanded = btnText.innerText === 'Show Less';
+
+    hiddenItems.forEach(item => {
+    if (isExpanded) {
+    // Jika sedang terbuka, sembunyikan lagi
+    item.classList.add('hidden');
+    // Tambahkan animasi fade out/in jika mau, tapi hidden cukup
+    } else {
+    // Jika sedang tertutup, munculkan
+    item.classList.remove('hidden');
+    // Tambahkan sedikit animasi masuk
+    item.classList.add('animate-fade-in');
+    }
+    });
+
+    // Update Teks dan Icon Tombol
+    if (isExpanded) {
+    btnText.innerText = 'Show More';
+    btnIcon.classList.remove('fa-chevron-up');
+    btnIcon.classList.add('fa-chevron-down');
+
+    // Opsional: Scroll sedikit ke atas agar user tidak bingung
+    document.getElementById('content-techstack').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+    btnText.innerText = 'Show Less';
+    btnIcon.classList.remove('fa-chevron-down');
+    btnIcon.classList.add('fa-chevron-up');
+    }
+    }
+
+    // --- FUNGSI TOGGLE PROJECTS ---
+    function toggleProjects() {
+    const hiddenItems = document.querySelectorAll('.extra-project');
+    const btnText = document.getElementById('projectBtnText');
+    const btnIcon = document.getElementById('projectBtnIcon');
+    const isExpanded = btnText.innerText === 'Show Less';
+
+    hiddenItems.forEach(item => {
+    if (isExpanded) {
+    item.classList.add('hidden');
+    } else {
+    item.classList.remove('hidden');
+    item.classList.add('animate-fade-in'); // Pastikan CSS animasi fade-in ada/gunakan default
+    }
+    });
+
+    if (isExpanded) {
+    btnText.innerText = 'Show More';
+    btnIcon.classList.remove('fa-chevron-up');
+    btnIcon.classList.add('fa-chevron-down');
+    // Scroll balik ke atas container projects agar user tidak bingung
+    document.getElementById('content-projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+    btnText.innerText = 'Show Less';
+    btnIcon.classList.remove('fa-chevron-down');
+    btnIcon.classList.add('fa-chevron-up');
+    }
+    }
+
+    // --- FUNGSI TOGGLE CERTIFICATES ---
+    function toggleCertificates() {
+    const hiddenItems = document.querySelectorAll('.extra-cert');
+    const btnText = document.getElementById('certBtnText');
+    const btnIcon = document.getElementById('certBtnIcon');
+    const isExpanded = btnText.innerText === 'Show Less';
+
+    hiddenItems.forEach(item => {
+    if (isExpanded) {
+    item.classList.add('hidden');
+    } else {
+    item.classList.remove('hidden');
+    item.classList.add('animate-fade-in');
+    }
+    });
+
+    if (isExpanded) {
+    btnText.innerText = 'Show More';
+    btnIcon.classList.remove('fa-chevron-up');
+    btnIcon.classList.add('fa-chevron-down');
+    document.getElementById('content-certificates').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+    btnText.innerText = 'Show Less';
+    btnIcon.classList.remove('fa-chevron-down');
+    btnIcon.classList.add('fa-chevron-up');
+    }
+    }
+
+    // --- SCRIPT BARU: MOBILE MENU TOGGLE ---
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+    // Ubah icon bars jadi silang (X) saat menu terbuka
+    const icon = btn.querySelector('i');
+    if (menu.classList.contains('hidden')) {
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+    } else {
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+    }
+    });
+
+    // Tutup menu saat link diklik
+    function toggleMobileMenu() {
+    menu.classList.add('hidden');
+    btn.querySelector('i').classList.remove('fa-times');
+    btn.querySelector('i').classList.add('fa-bars');
+    }
+  </script>
+</body>
+
+</html>

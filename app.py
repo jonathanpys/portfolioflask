@@ -28,17 +28,13 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def save_uploaded_file(file_storage):
-    """Fungsi pembantu untuk menyimpan file dan mengembalikan path-nya"""
     if file_storage and allowed_file(file_storage.filename):
-        # Amankan nama file
         filename = secure_filename(file_storage.filename)
-        
-        # Simpan file ke folder static/uploads
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file_storage.save(file_path)
         
-        # PERBAIKAN: Tambahkan '/' di depan agar path terbaca benar oleh HTML
-        return f"/{UPLOAD_FOLDER}/{filename}"
+        # Samakan dengan format sertifikat yang bekerja
+        return f"/static/uploads/{filename}" 
     return None
 
 # --- KONFIGURASI KEAMANAN ---
@@ -50,12 +46,14 @@ CORS(app)
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 
-# --- KONFIGURASI EMAIL ---
+# --- KONFIGURASI EMAIL (PRODUCTION FIXED) ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'jonathanpys8@gmail.com')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+# Pastikan mengambil nilai langsung dari env dan hapus spasi yang mungkin terbawa
+app.config['MAIL_USERNAME'] = str(os.getenv('MAIL_USERNAME', 'jonathanpys8@gmail.com')).strip()
+app.config['MAIL_PASSWORD'] = str(os.getenv('MAIL_PASSWORD', 'evabxjwjqcycqfjy')).strip()
 app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
 mail = Mail(app)
@@ -324,11 +322,9 @@ def contact():
         {message_content}
         """
         mail.send(msg)
-        
-        return jsonify({"success": True, "message": "Terima kasih! Pesan Anda telah terkirim."})
+        return jsonify({"success": True, "message": "Pesan terkirim!"})
     except Exception as e:
-        print(f"Error sending email: {e}")
-        return jsonify({"success": False, "message": "Gagal mengirim pesan."}), 500
+        return jsonify({"success": False, "message": f"Error: {str(e)}"}), 500
 
 # --- ADMIN / CMS ROUTES ---
 
@@ -387,30 +383,30 @@ def update_profile():
     return redirect(url_for('admin_dashboard'))
 
 # UPDATE ROUTE ADD PROJECT
-# UPDATE ROUTE ADD PROJECT
 @app.route('/admin/add_project', methods=['POST'])
 @login_required
 def add_project():
     try:
-        # Logika Gambar (Tetap sama)
+        # 1. Ambil file gambar
         image_file = request.files.get('image')
         image_path = None
         
+        # 2. Simpan gambar jika ada (pastikan return-nya 'uploads/filename.jpg')
         if image_file and image_file.filename != '':
             image_path = save_uploaded_file(image_file)
         
-        # Jika user tidak upload gambar baru, coba cek apakah dia input URL gambar manual?
-        # (Opsional, tapi kita fokus ke video dulu)
-        
+        # 3. Susun data project baru
+        # Pastikan 'image' mendapatkan variabel image_path yang baru saja diproses
         new_project = {
             "title": request.form.get('title'),
             "description": request.form.get('description'),
-            "image": image_path, 
-            # TAMBAHAN BARU: Ambil data video dari form
-            "video": request.form.get('video'), 
+            "image": image_path,  # Ini krusial: harus variabel image_path
+            "video": request.form.get('video'),
+            "link": request.form.get('link'),  # <--- Input Link baru
             "technologies": [tech.strip() for tech in request.form.get('technologies').split(',')]
         }
         
+        # 4. Update ke MongoDB
         mongo.db.portfolio.update_one(
             {"name": portfolio_data["name"]},
             {"$push": {"projects": new_project}}
